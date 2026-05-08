@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--bg4:#21262d;--bg5:#30363d;
+  --accent:#58a6ff;--accent2:#79c0ff;--accent3:#cae8ff;
+  --green:#3fb950;--amber:#d29922;--red:#f85149;--purple:#bc8cff;--pink:#ff7b72;
+  --text:#e6edf3;--text2:#8b949e;--text3:#484f58;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --radius:8px;--radius2:12px;--radius3:16px;
+  --shadow:0 8px 24px rgba(0,0,0,0.4);
+  --font:'DM Sans',system-ui,sans-serif;--font-display:'Syne',sans-serif;
+}
+body.light{
+  --bg:#f6f8fa;--bg2:#ffffff;--bg3:#f0f2f4;--bg4:#e8eaed;--bg5:#d0d7de;
+  --text:#1f2328;--text2:#656d76;--text3:#9ca3af;
+  --border:rgba(0,0,0,0.06);--border2:rgba(0,0,0,0.12);
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column;transition:background 0.3s,color 0.3s}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;background-image:radial-gradient(ellipse at 20% 50%,rgba(88,166,255,0.05) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(188,140,255,0.05) 0%,transparent 60%)}
+.login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius3);padding:40px;width:380px;max-width:95vw}
+.login-logo{font-family:var(--font-display);font-size:28px;font-weight:800;margin-bottom:6px;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-sub{font-size:13px;color:var(--text2);margin-bottom:28px}
+.login-error{background:rgba(248,81,73,0.1);border:1px solid rgba(248,81,73,0.3);border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:none}
+.inp-wrap{margin-bottom:14px}
+.inp-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;display:block}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 14px;color:var(--text);font-size:14px;font-family:var(--font);transition:border-color 0.2s}
+.inp:focus{outline:none;border-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:var(--font);transition:all 0.15s}
+.btn-primary{background:var(--accent);color:#0d1117}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover{background:var(--bg3);color:var(--text)}
+.btn-danger{background:rgba(248,81,73,0.15);color:var(--red);border:1px solid rgba(248,81,73,0.3)}
+.btn-danger:hover{background:rgba(248,81,73,0.25)}
+.btn-full{width:100%;justify-content:center;padding:11px}
+
+/* TOPBAR */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;gap:12px;flex-shrink:0;z-index:10}
+.topbar-logo{font-family:var(--font-display);font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-right:4px}
+.topbar-title{font-size:14px;font-weight:600;flex:1;color:var(--text)}
+.topbar-search{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:6px 12px;font-size:13px;color:var(--text2);min-width:200px}
+.topbar-search input{background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:var(--font);width:100%}
+.avatar-btn{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer;color:#0d1117;flex-shrink:0}
+.icon-btn{width:32px;height:32px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:all 0.15s;border:1px solid transparent}
+.icon-btn:hover{background:var(--bg3);color:var(--text)}
+
+/* LAYOUT */
+.app-body{flex:1;display:flex;overflow:hidden}
+.sidebar{width:220px;min-width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;transition:width 0.2s}
+.sidebar-inner{padding:12px 0;flex:1}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 16px;cursor:pointer;font-size:13.5px;color:var(--text2);transition:all 0.15s;position:relative;border-radius:0}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:rgba(88,166,255,0.1);color:var(--accent2)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--accent);border-radius:0 3px 3px 0}
+.nav-item i{font-size:17px;flex-shrink:0}
+.nav-section{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;padding:14px 16px 4px}
+.course-link{display:flex;align-items:center;gap:8px;padding:6px 16px;cursor:pointer;font-size:12.5px;color:var(--text2);transition:color 0.15s}
+.course-link:hover{color:var(--text)}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.content-area{flex:1;overflow-y:auto;padding:20px 24px}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:14px 16px}
+.stat-val{font-size:24px;font-weight:700;line-height:1}
+.stat-label{font-size:11px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:0.05em}
+.stat-icon{font-size:20px;opacity:0.5;margin-bottom:8px}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:16px}
+.card-title{font-size:14px;font-weight:600;margin-bottom:12px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-blue{background:rgba(88,166,255,0.15);color:var(--accent2)}
+.badge-green{background:rgba(63,185,80,0.15);color:var(--green)}
+.badge-amber{background:rgba(210,153,34,0.15);color:var(--amber)}
+.badge-red{background:rgba(248,81,73,0.15);color:var(--red)}
+.badge-purple{background:rgba(188,140,255,0.15);color:var(--purple)}
+
+/* PROGRESS */
+.progress-bar{width:100%;height:4px;background:var(--bg4);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.progress-fill{height:100%;border-radius:99px;transition:width 0.5s}
+
+/* COURSE CARDS */
+.course-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:16px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.course-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.course-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow)}
+.add-course-card{border:1px dashed var(--border2)!important;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:130px;color:var(--text3);gap:8px;transition:all 0.2s}
+.add-course-card:hover{color:var(--text2);border-color:var(--border2)!important}
+
+/* LESSONS */
+.two-col{display:grid;grid-template-columns:280px 1fr;gap:16px;height:calc(100vh - 160px)}
+.lesson-list{list-style:none;overflow-y:auto}
+.lesson-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius);cursor:pointer;transition:background 0.15s;border:1px solid transparent;margin-bottom:3px}
+.lesson-item:hover{background:var(--bg3)}
+.lesson-item.active{background:rgba(88,166,255,0.08);border-color:rgba(88,166,255,0.2)}
+.lesson-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.ln-done{background:var(--green);color:#0d1117}
+.ln-current{background:var(--accent);color:#0d1117}
+.ln-todo{background:var(--bg4);color:var(--text3)}
+.content-viewer{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:20px;overflow-y:auto;height:100%}
+.math-block{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:14px;font-family:'Courier New',monospace;font-size:16px;color:var(--accent2);text-align:center;margin:12px 0;letter-spacing:0.02em}
+.video-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--text3);cursor:pointer;transition:all 0.2s;margin:14px 0;overflow:hidden;position:relative}
+.video-wrap:hover{border-color:var(--accent);color:var(--accent2)}
+.video-wrap video,.video-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:var(--radius2)}
+.video-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:rgba(0,0,0,0.4);border-radius:var(--radius2)}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:18px;gap:0}
+.tab{padding:8px 16px;font-size:13px;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s;white-space:nowrap}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent);font-weight:500}
+
+/* GRADES */
+.grade-table{width:100%;border-collapse:collapse;font-size:13px}
+.grade-table th{text-align:left;padding:8px 12px;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em}
+.grade-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+.grade-table tr:last-child td{border-bottom:none}
+.grade-input{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:5px 8px;color:var(--text);font-size:13px;width:70px;text-align:center;font-family:var(--font)}
+.grade-input:focus{outline:none;border-color:var(--accent)}
+.final-num{font-size:40px;font-weight:700;line-height:1;font-family:var(--font-display)}
+
+/* CALENDAR */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-day-name{text-align:center;font-size:11px;color:var(--text3);padding:6px 0;font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
+.cal-day{min-height:70px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:6px;cursor:pointer;transition:border-color 0.15s}
+.cal-day:hover{border-color:var(--border2)}
+.cal-day.today{border-color:var(--accent);background:rgba(88,166,255,0.05)}
+.cal-day.other-month{opacity:0.3}
+.cal-day-num{font-size:12px;font-weight:500;margin-bottom:3px}
+.cal-event{font-size:10px;padding:1px 5px;border-radius:3px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev-colors{prova:'#f85149',trabalho:'#d29922',aula:'#58a6ff',outro:'#8b949e'}
+
+/* CONTACTS */
+.contacts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.contact-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:16px;display:flex;gap:14px;transition:border-color 0.15s;cursor:default}
+.contact-card:hover{border-color:var(--border2)}
+.avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.contact-detail{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.contact-detail i{font-size:13px;color:var(--text3)}
+.subj-tag{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10.5px;margin:2px 2px 0 0}
+
+/* FILES */
+.file-drop{border:2px dashed var(--border2);border-radius:var(--radius2);padding:32px;text-align:center;cursor:pointer;transition:all 0.2s;color:var(--text3)}
+.file-drop:hover,.file-drop.dragover{border-color:var(--accent);color:var(--accent2);background:rgba(88,166,255,0.04)}
+.file-drop i{font-size:36px;margin-bottom:10px}
+.file-item{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--bg3);border-radius:var(--radius);margin-bottom:6px}
+.file-icon{width:36px;height:36px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.file-name{font-size:13px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-size{font-size:11px;color:var(--text3)}
+
+/* CLAUDE CHAT */
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 140px)}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.chat-bubble{max-width:75%;padding:12px 16px;border-radius:var(--radius2);font-size:13.5px;line-height:1.6}
+.chat-bubble.user{background:var(--accent);color:#0d1117;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-bubble.assistant{background:var(--bg3);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;border:1px solid var(--border)}
+.chat-bubble.loading{color:var(--text2)}
+.chat-input-row{display:flex;gap:10px;padding:16px;border-top:1px solid var(--border);background:var(--bg2)}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius2);padding:10px 16px;color:var(--text);font-size:13.5px;font-family:var(--font);resize:none;min-height:44px;max-height:120px}
+.chat-input:focus{outline:none;border-color:var(--accent)}
+.chat-context{padding:8px 16px;font-size:12px;color:var(--text3);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius3);padding:24px;width:460px;max-width:95vw;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow)}
+.modal h3{font-size:16px;font-weight:600;margin-bottom:16px;font-family:var(--font-display)}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;color:var(--text2);margin-bottom:5px;display:block;font-weight:500}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 12px;color:var(--text);font-size:13px;font-family:var(--font)}
+.form-input:focus{outline:none;border-color:var(--accent)}
+.form-row{display:flex;gap:10px}
+.form-row .form-group{flex:1}
+.color-swatch{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:border-color 0.15s}
+.color-swatch.selected{border-color:white}
+
+/* ADMIN BADGE */
+.admin-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;background:rgba(188,140,255,0.15);color:var(--purple);font-weight:600}
+
+/* EXPORT MENU */
+.dropdown{position:relative;display:inline-block}
+.dropdown-menu{position:absolute;right:0;top:calc(100% + 4px);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius2);min-width:180px;z-index:50;box-shadow:var(--shadow);overflow:hidden}
+.dropdown-menu.hidden{display:none}
+.dropdown-item{display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:13px;cursor:pointer;color:var(--text2);transition:background 0.15s}
+.dropdown-item:hover{background:var(--bg3);color:var(--text)}
+
+/* NOTIFICATION */
+.notif{position:fixed;bottom:20px;right:20px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius2);padding:12px 16px;font-size:13px;z-index:999;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);transform:translateY(80px);opacity:0;transition:all 0.3s}
+.notif.show{transform:translateY(0);opacity:1}
+.notif.success{border-color:rgba(63,185,80,0.4);color:var(--green)}
+.notif.error{border-color:rgba(248,81,73,0.4);color:var(--red)}
+
+/* CLOUD STORAGE */
+.cloud-btn{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius2);cursor:pointer;transition:all 0.2s;width:100%;margin-bottom:8px;color:var(--text)}
+.cloud-btn:hover{border-color:var(--border2);background:var(--bg4)}
+.cloud-logo{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:99px}
+
+/* ANIMATIONS */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page.active{animation:fadeIn 0.2s ease}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite}
+
+/* ADMIN PANEL */
+.admin-section{background:rgba(188,140,255,0.05);border:1px solid rgba(188,140,255,0.15);border-radius:var(--radius2);padding:14px;margin-bottom:16px}
+.admin-section-title{font-size:12px;color:var(--purple);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif"><i class="ti ti-check" id="notif-icon"></i><span id="notif-text"></span></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">StudyHub</div>
+    <div class="login-sub">Plataforma de Estudos</div>
+    <div class="login-error" id="login-error">Usuário ou senha incorretos.</div>
+    <div class="inp-wrap"><label class="inp-label">Usuário</label><input class="inp" id="l-user" placeholder="seu usuário" autocomplete="username"></div>
+    <div class="inp-wrap"><label class="inp-label">Senha</label><input class="inp" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()"><i class="ti ti-login"></i> Entrar</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;flex-direction:column;height:100vh">
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo">SH</div>
+  <span class="topbar-title" id="topbar-title">Dashboard</span>
+  <div class="topbar-search"><i class="ti ti-search" style="font-size:14px;flex-shrink:0"></i><input placeholder="Buscar..." id="search-inp" oninput="doSearch(this.value)"></div>
+  <div class="icon-btn" onclick="toggleTheme()" title="Tema"><i class="ti ti-sun" id="theme-icon"></i></div>
+  <div class="icon-btn" onclick="showPage('claude')" title="Claude AI"><i class="ti ti-robot"></i></div>
+  <div class="icon-btn" onclick="showPage('files')" title="Arquivos"><i class="ti ti-paperclip"></i></div>
+  <div class="avatar-btn" id="user-avatar" onclick="toggleUserMenu()">G</div>
+</header>
+
+<div class="app-body">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-inner">
+    <div class="nav-item active" onclick="showPage('dashboard')"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+    <div class="nav-item" onclick="showPage('courses')"><i class="ti ti-books"></i> Cursos</div>
+    <div class="nav-item" onclick="showPage('grades')"><i class="ti ti-chart-bar"></i> Notas</div>
+    <div class="nav-item" onclick="showPage('calendar')"><i class="ti ti-calendar"></i> Calendário</div>
+    <div class="nav-item" onclick="showPage('contacts')"><i class="ti ti-users"></i> Contatos</div>
+    <div class="nav-item" onclick="showPage('files')"><i class="ti ti-files"></i> Arquivos</div>
+    <div class="nav-item" onclick="showPage('claude')"><i class="ti ti-robot"></i> Chat Claude</div>
+    <div id="admin-nav" style="display:none">
+      <div class="nav-item" onclick="showPage('admin')"><i class="ti ti-shield" style="color:var(--purple)"></i> <span style="color:var(--purple)">Admin</span></div>
+    </div>
+    <div class="nav-section" id="sidebar-courses-section">Meus Cursos</div>
+    <div id="sidebar-courses"></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+<div class="content-area" id="content-area">
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="stats-row" id="dash-stats"></div>
+  <div class="grid2">
+    <div class="card"><div class="card-title">Progresso dos Cursos</div><div id="dash-progress"></div></div>
+    <div class="card"><div class="card-title">Próximos Eventos</div><div id="dash-events"></div></div>
+  </div>
+</div>
+
+<!-- COURSES -->
+<div class="page" id="page-courses">
+  <div id="courses-list">
+    <div class="grid3" id="courses-grid"></div>
+  </div>
+  <div id="course-detail" style="display:none">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <button class="btn btn-ghost" onclick="backToCourses()"><i class="ti ti-arrow-left"></i></button>
+      <span id="course-detail-name" style="font-size:16px;font-weight:700;font-family:var(--font-display)"></span>
+      <span id="course-detail-badge" class="badge badge-blue"></span>
+      <div style="flex:1"></div>
+      <button class="btn btn-ghost" id="add-lesson-btn" style="display:none" onclick="openAddLesson()"><i class="ti ti-plus"></i> Aula</button>
+    </div>
+    <div class="tabs" id="detail-tabs">
+      <div class="tab active" onclick="showCourseTab('content')">Conteúdo</div>
+      <div class="tab" onclick="showCourseTab('material')">Material</div>
+      <div class="tab" onclick="showCourseTab('forum')">Discussão</div>
+    </div>
+    <div id="ctab-content">
+      <div class="two-col">
+        <div><ul class="lesson-list" id="lesson-list"></ul></div>
+        <div class="content-viewer" id="lesson-viewer">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text3)">
+            <i class="ti ti-click" style="font-size:40px;margin-bottom:10px"></i>
+            <span style="font-size:14px">Selecione uma aula para começar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="ctab-material" style="display:none">
+      <div id="course-materials"></div>
+    </div>
+    <div id="ctab-forum" style="display:none">
+      <div class="card"><p style="color:var(--text2);font-size:13px">Discussões e dúvidas do curso aparecerão aqui.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- GRADES -->
+<div class="page" id="page-grades">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <span style="font-size:15px;font-weight:600">Notas</span>
+    <div style="display:flex;gap:8px">
+      <div class="dropdown">
+        <button class="btn btn-ghost" onclick="toggleDropdown('export-dd')"><i class="ti ti-download"></i> Exportar</button>
+        <div class="dropdown-menu hidden" id="export-dd">
+          <div class="dropdown-item" onclick="exportCSV()"><i class="ti ti-file-text"></i> Exportar CSV</div>
+          <div class="dropdown-item" onclick="exportPDF()"><i class="ti ti-file-type-pdf"></i> Exportar PDF</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs" id="grades-tabs"></div>
+  <div id="grades-content"></div>
+</div>
+
+<!-- CALENDAR -->
+<div class="page" id="page-calendar">
+  <div class="cal-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="btn btn-ghost" onclick="changeMonth(-1)"><i class="ti ti-chevron-left"></i></button>
+      <span style="font-size:15px;font-weight:600;min-width:160px;text-align:center" id="cal-label"></span>
+      <button class="btn btn-ghost" onclick="changeMonth(1)"><i class="ti ti-chevron-right"></i></button>
+    </div>
+    <button class="btn btn-primary" onclick="openModal('m-event')"><i class="ti ti-plus"></i> Novo Evento</button>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+</div>
+
+<!-- CONTACTS -->
+<div class="page" id="page-contacts">
+  <div class="card-header">
+    <span class="card-title" style="margin:0">Contatos</span>
+    <button class="btn btn-primary" onclick="openModal('m-contact')"><i class="ti ti-user-plus"></i> Adicionar</button>
+  </div>
+  <div class="contacts-grid" id="contacts-grid"></div>
+</div>
+
+<!-- FILES -->
+<div class="page" id="page-files">
+  <div class="card-header">
+    <span style="font-size:15px;font-weight:600">Arquivos</span>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" onclick="openModal('m-cloud')"><i class="ti ti-cloud"></i> Cloud Storage</button>
+      <button class="btn btn-primary" onclick="document.getElementById('file-upload-main').click()"><i class="ti ti-upload"></i> Enviar Arquivo</button>
+    </div>
+  </div>
+  <input type="file" id="file-upload-main" multiple accept="*" style="display:none" onchange="handleFileUpload(this.files,'geral')">
+  <div class="file-drop" id="main-drop" onclick="document.getElementById('file-upload-main').click()">
+    <i class="ti ti-cloud-upload"></i>
+    <div style="font-size:14px;font-weight:500">Arraste arquivos aqui ou clique para enviar</div>
+    <div style="font-size:12px;margin-top:4px">PDF, vídeos, imagens, documentos...</div>
+  </div>
+  <div id="files-list" style="margin-top:16px"></div>
+</div>
+
+<!-- CLAUDE CHAT -->
+<div class="page" id="page-claude" style="padding:0;margin:-20px -24px;height:calc(100vh - 52px);display:none">
+  <div class="chat-context">
+    <i class="ti ti-robot"></i>
+    <span id="chat-context-label">Assistente de estudos</span>
+    <div style="flex:1"></div>
+    <select id="chat-course-ctx" onchange="updateChatContext()" style="background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--text2);font-family:var(--font)">
+      <option value="">Contexto geral</option>
+    </select>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-bubble assistant">
+      Olá! Sou o Claude, seu assistente de estudos. Posso ajudar a explicar conceitos, resolver exercícios, resumir conteúdos e muito mais. Sobre o que você quer estudar hoje?
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <textarea class="chat-input" id="chat-input" placeholder="Pergunte algo sobre seus estudos..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+    <button class="btn btn-primary" onclick="sendChat()" id="chat-send-btn"><i class="ti ti-send"></i></button>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+    <span style="font-size:15px;font-weight:700;font-family:var(--font-display)">Painel Administrativo</span>
+    <span class="admin-badge"><i class="ti ti-shield" style="font-size:10px"></i> Admin</span>
+  </div>
+  <div class="admin-section">
+    <div class="admin-section-title"><i class="ti ti-books"></i> Gerenciar Cursos</div>
+    <button class="btn btn-primary" onclick="openModal('m-course')" style="margin-bottom:12px"><i class="ti ti-plus"></i> Novo Curso</button>
+    <div id="admin-courses-list"></div>
+  </div>
+  <div class="admin-section">
+    <div class="admin-section-title"><i class="ti ti-users"></i> Usuários</div>
+    <div id="admin-users-list"></div>
+  </div>
+</div>
+
+</div><!-- content-area -->
+</main>
+</div><!-- app-body -->
+</div><!-- app -->
+
+<!-- MODALS -->
+<div class="modal-overlay" id="m-course">
+  <div class="modal">
+    <h3 id="m-course-title">Novo Curso</h3>
+    <div class="form-group"><label class="form-label">Nome do curso</label><input class="form-input" id="nc-name" placeholder="Ex: Cálculo III"></div>
+    <div class="form-group"><label class="form-label">Professor</label><input class="form-input" id="nc-prof" placeholder="Nome do professor"></div>
+    <div class="form-group"><label class="form-label">Cor</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px" id="color-swatches"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Descrição (opcional)</label><textarea class="form-input" id="nc-desc" rows="2" placeholder="Sobre o curso..."></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost" onclick="closeModal('m-course')" style="flex:1">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCourse()" style="flex:1" id="nc-save-btn">Criar Curso</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-lesson">
+  <div class="modal">
+    <h3>Nova Aula</h3>
+    <div class="form-group"><label class="form-label">Título da aula</label><input class="form-input" id="nl-title" placeholder="Ex: Integrais Duplas"></div>
+    <div class="form-group"><label class="form-label">Duração</label><input class="form-input" id="nl-dur" placeholder="Ex: 25min"></div>
+    <div class="form-group"><label class="form-label">Conteúdo / Descrição</label><textarea class="form-input" id="nl-body" rows="3" placeholder="Texto explicativo da aula..."></textarea></div>
+    <div class="form-group"><label class="form-label">Expressão matemática (opcional)</label><input class="form-input" id="nl-math" placeholder="Ex: ∫∫ f(x,y) dA"></div>
+    <div class="form-group"><label class="form-label">Vídeo / Imagem (upload)</label>
+      <input type="file" id="nl-media" accept="video/*,image/*" style="display:none" onchange="previewMedia(this)">
+      <div class="file-drop" style="padding:16px" onclick="document.getElementById('nl-media').click()">
+        <i class="ti ti-upload" style="font-size:22px;margin-bottom:4px"></i>
+        <div id="nl-media-name" style="font-size:12px">Clique para enviar vídeo ou imagem</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost" onclick="closeModal('m-lesson')" style="flex:1">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveLesson()" style="flex:1">Salvar Aula</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-event">
+  <div class="modal">
+    <h3>Novo Evento</h3>
+    <div class="form-group"><label class="form-label">Título</label><input class="form-input" id="ev-title" placeholder="Ex: Prova de Cálculo III"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Data</label><input class="form-input" id="ev-date" type="date"></div>
+      <div class="form-group"><label class="form-label">Tipo</label>
+        <select class="form-input" id="ev-type">
+          <option value="prova">Prova</option>
+          <option value="trabalho">Trabalho</option>
+          <option value="aula">Aula especial</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Curso relacionado (opcional)</label>
+      <select class="form-input" id="ev-course"><option value="">Nenhum</option></select>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost" onclick="closeModal('m-event')" style="flex:1">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEvent()" style="flex:1">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-contact">
+  <div class="modal">
+    <h3>Novo Contato</h3>
+    <div class="form-group"><label class="form-label">Nome</label><input class="form-input" id="ct-name" placeholder="Prof. Ana Silva"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="ct-email" type="email" placeholder="prof@universidade.edu.br"></div>
+      <div class="form-group"><label class="form-label">Telefone</label><input class="form-input" id="ct-phone" placeholder="(51) 9xxxx-xxxx"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Matérias que leciona</label><input class="form-input" id="ct-subjects" placeholder="Cálculo I, Álgebra (separar por vírgula)"></div>
+    <div class="form-group"><label class="form-label">Foto (upload ou URL)</label>
+      <div style="display:flex;gap:8px">
+        <input class="form-input" id="ct-photo-url" placeholder="https://..." style="flex:1">
+        <button class="btn btn-ghost" onclick="document.getElementById('ct-photo-file').click()"><i class="ti ti-upload"></i></button>
+        <input type="file" id="ct-photo-file" accept="image/*" style="display:none" onchange="loadContactPhoto(this)">
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost" onclick="closeModal('m-contact')" style="flex:1">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveContact()" style="flex:1">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-grade-setup">
+  <div class="modal">
+    <h3 id="gs-title">Critérios de Avaliação</h3>
+    <p style="font-size:12.5px;color:var(--text2);margin-bottom:14px">Os pesos devem somar 100%. A média é calculada automaticamente.</p>
+    <div id="criteria-list"></div>
+    <button class="btn btn-ghost" onclick="addCriterion()" style="width:100%;margin-bottom:12px"><i class="ti ti-plus"></i> Adicionar critério</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" onclick="closeModal('m-grade-setup')" style="flex:1">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCriteria()" style="flex:1">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-cloud">
+  <div class="modal">
+    <h3>Cloud Storage</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Conecte sua conta de armazenamento em nuvem para importar arquivos diretamente.</p>
+    <div class="cloud-btn" onclick="cloudConnect('google')">
+      <div class="cloud-logo" style="background:#fff;color:#4285f4">G</div>
+      <div><div style="font-size:13px;font-weight:500">Google Drive</div><div style="font-size:11px;color:var(--text3)" id="gdrive-status">Não conectado</div></div>
+      <i class="ti ti-external-link" style="margin-left:auto;color:var(--text3)"></i>
+    </div>
+    <div class="cloud-btn" onclick="cloudConnect('onedrive')">
+      <div class="cloud-logo" style="background:#0078d4;color:white"><i class="ti ti-brand-windows" style="font-size:16px"></i></div>
+      <div><div style="font-size:13px;font-weight:500">OneDrive</div><div style="font-size:11px;color:var(--text3)" id="onedrive-status">Não conectado</div></div>
+      <i class="ti ti-external-link" style="margin-left:auto;color:var(--text3)"></i>
+    </div>
+    <div class="cloud-btn" onclick="cloudConnect('icloud')">
+      <div class="cloud-logo" style="background:#3a3a3c;color:white"><i class="ti ti-brand-apple" style="font-size:16px"></i></div>
+      <div><div style="font-size:13px;font-weight:500">iCloud Drive</div><div style="font-size:11px;color:var(--text3)" id="icloud-status">Não conectado</div></div>
+      <i class="ti ti-external-link" style="margin-left:auto;color:var(--text3)"></i>
+    </div>
+    <p style="font-size:11.5px;color:var(--text3);margin-top:12px;line-height:1.6">Para ativar a integração real, você precisará registrar o app no Google Console / Microsoft Azure / Apple Developer e adicionar as chaves OAuth no código. <a href="README.md" style="color:var(--accent)">Ver instruções no README</a>.</p>
+    <button class="btn btn-ghost" onclick="closeModal('m-cloud')" style="width:100%;margin-top:12px">Fechar</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-user-menu">
+  <div class="modal" style="width:300px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div class="avatar-btn" style="width:44px;height:44px;font-size:18px" id="menu-avatar">G</div>
+      <div>
+        <div style="font-weight:600" id="menu-username">gblcezimbra</div>
+        <span class="admin-badge" id="menu-role-badge" style="display:none"><i class="ti ti-shield" style="font-size:10px"></i> Admin</span>
+        <span id="menu-role-user" style="font-size:11px;color:var(--text3)">Estudante</span>
+      </div>
+    </div>
+    <button class="btn btn-danger" onclick="doLogout()" style="width:100%"><i class="ti ti-logout"></i> Sair</button>
+  </div>
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────
+const USERS = [
+  { id:1, username:'admin', password:'admin123', role:'admin', display:'Admin', initials:'AD' },
+  { id:2, username:'gblcezimbra', password:'Czb2004#', role:'user', display:'Gabriel', initials:'GL' }
+];
+
+let S = {
+  user: null,
+  theme: 'dark',
+  courses: [
+    { id:1, name:'Cálculo III', color:'#58a6ff', prof:'Prof. Ribeiro', desc:'Integrais múltiplas e séries', progress:65,
+      lessons:[
+        {id:1,title:'Integrais Duplas — Introdução',done:true,dur:'18min',body:'Uma integral dupla é a extensão da integral simples para funções de duas variáveis. Representa o volume sob a superfície z = f(x,y) sobre uma região R.',math:'∬_R f(x,y) dA = ∫ₐᵇ ∫_{g₁(x)}^{g₂(x)} f(x,y) dy dx',mediaUrl:null,mediaType:null},
+        {id:2,title:'Ordem de Integração',done:true,dur:'22min',body:'O Teorema de Fubini garante que, para funções contínuas, é possível trocar a ordem de integração. Isso pode simplificar enormemente os cálculos.',math:'∫ₐᵇ ∫_{c}^{d} f(x,y) dy dx = ∫_c^d ∫ₐᵇ f(x,y) dx dy',mediaUrl:null,mediaType:null},
+        {id:3,title:'Mudança de Variáveis',done:false,dur:'31min',body:'A mudança de variáveis generaliza a substituição simples. O Jacobiano da transformação mede como a transformação escala infinitésimos de área.',math:'∬_R f(x,y) dA = ∬_S f(g,h) |J(u,v)| du dv',mediaUrl:null,mediaType:null,current:true},
+        {id:4,title:'Coordenadas Polares',done:false,dur:'25min',body:'Para regiões circulares, coordenadas polares simplificam muito o cálculo. A transformação é x = r cos θ, y = r sen θ.',math:'∬_R f dA = ∫∫ f(r cosθ, r senθ) · r dr dθ',mediaUrl:null,mediaType:null},
+        {id:5,title:'Integrais Triplas',done:false,dur:'28min',body:'Extensão natural para funções de três variáveis. Calculates volume de sólidos e massa de objetos com densidade variável.',math:'∭_E f(x,y,z) dV',mediaUrl:null,mediaType:null}
+      ],
+      criteria:[{name:'P1',weight:30},{name:'P2',weight:30},{name:'Trabalho',weight:20},{name:'Final',weight:20}],
+      grades:{},files:[]
+    },
+    { id:2, name:'Física II', color:'#3fb950', prof:'Prof. Almeida', desc:'Eletromagnetismo', progress:40,
+      lessons:[
+        {id:1,title:'Eletrostática',done:true,dur:'20min',body:'Estudo das cargas elétricas em repouso. A força entre cargas é descrita pela Lei de Coulomb.',math:'F = k · q₁q₂ / r²',mediaUrl:null,mediaType:null},
+        {id:2,title:'Campo Elétrico',done:true,dur:'18min',body:'Campo elétrico é o espaço ao redor de uma carga onde outra carga sente a sua influência.',math:'E⃗ = F⃗/q = k·Q/r² r̂',mediaUrl:null,mediaType:null},
+        {id:3,title:'Potencial Elétrico',done:false,dur:'24min',body:'O potencial elétrico é o trabalho realizado para mover uma carga unitária de um ponto de referência até o ponto em questão.',math:'V = k·Q/r',mediaUrl:null,mediaType:null,current:true},
+      ],
+      criteria:[{name:'P1',weight:40},{name:'P2',weight:40},{name:'Lab',weight:20}],
+      grades:{},files:[]
+    },
+    { id:3, name:'Álgebra Linear', color:'#bc8cff', prof:'Prof. Costa', desc:'Espaços vetoriais e transformações', progress:80,
+      lessons:[
+        {id:1,title:'Espaços Vetoriais',done:true,dur:'25min',body:'Um espaço vetorial é um conjunto com operações de adição e multiplicação por escalar que satisfazem axiomas específicos.',math:'V = {v | v ∈ ℝⁿ}',mediaUrl:null,mediaType:null},
+        {id:2,title:'Transformações Lineares',done:true,dur:'30min',body:'Uma transformação linear T: V→W preserva as operações de adição e multiplicação por escalar.',math:'T(αu + βv) = αT(u) + βT(v)',mediaUrl:null,mediaType:null},
+        {id:3,title:'Autovalores e Autovetores',done:true,dur:'28min',body:'Um autovetor v de T satisfaz T(v) = λv, onde λ é o autovalor correspondente.',math:'det(A - λI) = 0',mediaUrl:null,mediaType:null},
+        {id:4,title:'Diagonalização',done:false,dur:'22min',body:'Uma matriz A é diagonalizável se existe uma base de autovetores. Então A = PDP⁻¹.',math:'A = P·D·P⁻¹',mediaUrl:null,mediaType:null,current:true},
+      ],
+      criteria:[{name:'P1',weight:35},{name:'P2',weight:35},{name:'Listas',weight:30}],
+      grades:{},files:[]
+    }
+  ],
+  contacts:[
+    {id:1,name:'Prof. Carlos Ribeiro',email:'c.ribeiro@uni.edu.br',phone:'(51) 99123-4567',subjects:['Cálculo III','Cálculo IV'],photo:'',initials:'CR',color:'#58a6ff'},
+    {id:2,name:'Prof. Fernanda Almeida',email:'f.almeida@uni.edu.br',phone:'(51) 98765-4321',subjects:['Física II','Física III'],photo:'',initials:'FA',color:'#3fb950'},
+    {id:3,name:'Prof. Marcelo Costa',email:'m.costa@uni.edu.br',phone:'(51) 97654-3210',subjects:['Álgebra Linear'],photo:'',initials:'MC',color:'#bc8cff'},
+  ],
+  events:[
+    {id:1,title:'P1 Cálculo III',date:dateOffset(7),type:'prova',course:1},
+    {id:2,title:'Entrega Trabalho Física',date:dateOffset(12),type:'trabalho',course:2},
+    {id:3,title:'P2 Álgebra Linear',date:dateOffset(20),type:'prova',course:3},
+  ],
+  files:[],
+  chatHistory:[],
+  chatCourseCtx:'',
+  calMonth: new Date().getMonth(),
+  calYear: new Date().getFullYear(),
+  currentCourse: null,
+  currentGradeTab: 0,
+  editingCriteriaId: null,
+  editingCourseId: null,
+  selectedColor:'#58a6ff',
+  newLessonMedia: null,
+  contactPhotoData: null,
+};
+
+// ─── HELPERS ─────────────────────────────────────────────
+function dateOffset(d){const dt=new Date();dt.setDate(dt.getDate()+d);return dt.toISOString().split('T')[0]}
+function formatDate(s){const d=new Date(s+'T12:00:00');return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})}
+function evColor(t){return{prova:'#f85149',trabalho:'#d29922',aula:'#58a6ff',outro:'#8b949e'}[t]||'#8b949e'}
+function fileIcon(name){
+  const ext=(name.split('.').pop()||'').toLowerCase();
+  if(['mp4','mov','avi','webm'].includes(ext))return{icon:'ti-video',color:'#f85149'};
+  if(['jpg','jpeg','png','gif','webp','svg'].includes(ext))return{icon:'ti-photo',color:'#3fb950'};
+  if(['pdf'].includes(ext))return{icon:'ti-file-type-pdf',color:'#d29922'};
+  if(['doc','docx'].includes(ext))return{icon:'ti-file-text',color:'#58a6ff'};
+  return{icon:'ti-file',color:'#8b949e'};
+}
+function fmtSize(b){if(b<1024)return b+'B';if(b<1024*1024)return(b/1024).toFixed(1)+'KB';return(b/1024/1024).toFixed(1)+'MB'}
+
+function notify(msg,type='success'){
+  const n=document.getElementById('notif');
+  n.querySelector('#notif-text').textContent=msg;
+  n.querySelector('#notif-icon').className='ti ti-'+(type==='success'?'check':'x');
+  n.className='notif show '+type;
+  setTimeout(()=>n.className='notif',3000);
+}
+
+// ─── LOGIN ────────────────────────────────────────────────
+function doLogin(){
+  const u=document.getElementById('l-user').value.trim();
+  const p=document.getElementById('l-pass').value;
+  const found=USERS.find(x=>x.username===u&&x.password===p);
+  if(!found){document.getElementById('login-error').style.display='block';return}
+  document.getElementById('login-error').style.display='none';
+  S.user=found;
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('user-avatar').textContent=found.initials;
+  if(found.role==='admin')document.getElementById('admin-nav').style.display='block';
+  initApp();
+  notify('Bem-vindo, '+found.display+'!');
+}
+function doLogout(){
+  S.user=null;
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('l-user').value='';
+  document.getElementById('l-pass').value='';
+  closeModal('m-user-menu');
+}
+function toggleUserMenu(){
+  document.getElementById('menu-username').textContent=S.user?.username||'';
+  document.getElementById('menu-avatar').textContent=S.user?.initials||'?';
+  if(S.user?.role==='admin'){
+    document.getElementById('menu-role-badge').style.display='inline-flex';
+    document.getElementById('menu-role-user').style.display='none';
+  }
+  openModal('m-user-menu');
+}
+
+// ─── THEME ────────────────────────────────────────────────
+function toggleTheme(){
+  S.theme=S.theme==='dark'?'light':'dark';
+  document.body.classList.toggle('light',S.theme==='light');
+  document.getElementById('theme-icon').className='ti ti-'+(S.theme==='dark'?'sun':'moon');
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>{p.classList.remove('active');p.style.display=''});
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const el=document.getElementById('page-'+page);
+  if(!el)return;
+  if(page==='claude'){el.style.display='flex';el.classList.add('active')}
+  else{el.classList.add('active')}
+  document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')?.includes("'"+page+"'"))n.classList.add('active')});
+  const titles={dashboard:'Dashboard',courses:'Meus Cursos',grades:'Notas',calendar:'Calendário',contacts:'Contatos',files:'Arquivos',claude:'Chat com Claude',admin:'Administração'};
+  document.getElementById('topbar-title').textContent=titles[page]||page;
+  const renders={dashboard:renderDashboard,courses:renderCourses,grades:renderGrades,calendar:renderCalendar,contacts:renderContacts,files:renderFiles,admin:renderAdmin};
+  if(renders[page])renders[page]();
+  document.querySelectorAll('#export-dd').forEach(d=>d.classList.add('hidden'));
+}
+
+function initApp(){
+  renderSidebar();
+  populateColorSwatches();
+  setupDrop();
+  showPage('dashboard');
+  updateChatCourseSelect();
+}
+
+// ─── SIDEBAR ─────────────────────────────────────────────
+function renderSidebar(){
+  document.getElementById('sidebar-courses').innerHTML=S.courses.map(c=>`
+    <div class="course-link" onclick="openCourse(${c.id})">
+      <div class="dot" style="background:${c.color}"></div>${c.name}
+    </div>`).join('');
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────
+function calcAvg(c){
+  if(!c.criteria?.length)return null;
+  let tw=0,tv=0;
+  for(const cr of c.criteria){const v=parseFloat(c.grades[cr.name]);if(!isNaN(v)){tv+=v*cr.weight;tw+=cr.weight}}
+  return tw?tv/tw:null;
+}
+function renderDashboard(){
+  const done=S.courses.reduce((a,c)=>a+c.lessons.filter(l=>l.done).length,0);
+  const avgs=S.courses.map(c=>calcAvg(c)).filter(v=>v!==null);
+  const avg=avgs.length?(avgs.reduce((a,b)=>a+b,0)/avgs.length).toFixed(1):'—';
+  const now=new Date();
+  const mEv=S.events.filter(e=>{const d=new Date(e.date+'T12:00:00');return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()});
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-icon" style="color:var(--accent)"><i class="ti ti-books"></i></div><div class="stat-val">${S.courses.length}</div><div class="stat-label">Cursos ativos</div></div>
+    <div class="stat-card"><div class="stat-icon" style="color:var(--green)"><i class="ti ti-check"></i></div><div class="stat-val">${done}</div><div class="stat-label">Aulas concluídas</div></div>
+    <div class="stat-card"><div class="stat-icon" style="color:var(--amber)"><i class="ti ti-chart-bar"></i></div><div class="stat-val">${avg}</div><div class="stat-label">Média geral</div></div>
+    <div class="stat-card"><div class="stat-icon" style="color:var(--purple)"><i class="ti ti-calendar"></i></div><div class="stat-val">${mEv.length}</div><div class="stat-label">Eventos no mês</div></div>`;
+  document.getElementById('dash-progress').innerHTML=S.courses.map(c=>`
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:2px">
+        <span style="color:var(--text2)">${c.name}</span><span style="color:var(--text3)">${c.progress}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${c.progress}%;background:${c.color}"></div></div>
+    </div>`).join('')||'<p style="color:var(--text3);font-size:13px">Nenhum curso ainda.</p>';
+  const upcoming=[...S.events].sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
+  document.getElementById('dash-events').innerHTML=upcoming.map(e=>{
+    const c=S.courses.find(x=>x.id===e.course);
+    return`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="width:34px;height:34px;border-radius:8px;background:${evColor(e.type)}22;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i class="ti ti-${e.type==='prova'?'pencil':e.type==='trabalho'?'file-text':'calendar'}" style="color:${evColor(e.type)};font-size:16px"></i>
+      </div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${e.title}</div><div style="font-size:11px;color:var(--text3)">${formatDate(e.date)}${c?' · '+c.name:''}</div></div>
+    </div>`}).join('')||'<p style="color:var(--text3);font-size:13px">Sem eventos próximos.</p>';
+}
+
+// ─── COURSES ─────────────────────────────────────────────
+function renderCourses(){
+  const isAdmin=S.user?.role==='admin';
+  document.getElementById('courses-grid').innerHTML=S.courses.map(c=>`
+    <div class="course-card" onclick="openCourse(${c.id})" style="border-top-color:${c.color}">
+      <div class="card-header" style="margin-bottom:8px">
+        <div>
+          <div style="font-size:14px;font-weight:600;font-family:var(--font-display)">${c.name}</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">${c.prof||'—'}</div>
+        </div>
+        <span class="badge badge-blue">${c.lessons.length} aulas</span>
+      </div>
+      ${c.desc?`<div style="font-size:12px;color:var(--text3);margin-bottom:8px">${c.desc}</div>`:''}
+      <div class="progress-bar"><div class="progress-fill" style="width:${c.progress}%;background:${c.color}"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3)">
+        <span>${c.lessons.filter(l=>l.done).length}/${c.lessons.length} concluídas</span><span>${c.progress}%</span>
+      </div>
+    </div>`).join('')+(isAdmin?`<div class="course-card add-course-card" onclick="openModal('m-course')">
+      <i class="ti ti-plus" style="font-size:28px"></i><span style="font-size:13px">Adicionar curso</span></div>`:'');
+}
+
+function openCourse(id){
+  S.currentCourse=S.courses.find(c=>c.id===id);
+  if(!S.currentCourse)return;
+  document.getElementById('courses-list').style.display='none';
+  document.getElementById('course-detail').style.display='block';
+  document.getElementById('course-detail-name').textContent=S.currentCourse.name;
+  document.getElementById('course-detail-badge').textContent=S.currentCourse.prof||'';
+  const addBtn=document.getElementById('add-lesson-btn');
+  addBtn.style.display=S.user?.role==='admin'?'inline-flex':'none';
+  showCourseTab('content');
+  renderLessons();
+  renderCourseFiles();
+}
+function backToCourses(){
+  document.getElementById('courses-list').style.display='';
+  document.getElementById('course-detail').style.display='none';
+  S.currentCourse=null;
+  renderCourses();
+}
+function showCourseTab(tab){
+  ['content','material','forum'].forEach(t=>{
+    document.getElementById('ctab-'+t).style.display=t===tab?'':'none';
+  });
+  document.querySelectorAll('#detail-tabs .tab').forEach((t,i)=>{
+    t.classList.toggle('active',['content','material','forum'][i]===tab);
+  });
+}
+function renderLessons(){
+  const c=S.currentCourse;
+  document.getElementById('lesson-list').innerHTML=c.lessons.map((l,i)=>{
+    const cls=l.done?'ln-done':l.current?'ln-current':'ln-todo';
+    const icon=l.done?'<i class="ti ti-check" style="font-size:10px"></i>':(i+1);
+    return`<li class="lesson-item${l.current?' active':''}" onclick="selectLesson(${i})">
+      <div class="lesson-num ${cls}">${icon}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:500">${l.title}</div>
+        <div style="font-size:11px;color:var(--text3)"><i class="ti ti-clock" style="font-size:10px;vertical-align:-1px"></i> ${l.dur}</div>
+      </div>
+      ${l.done?'<span class="badge badge-green" style="font-size:9px">Feito</span>':l.current?'<span class="badge badge-blue" style="font-size:9px">Atual</span>':''}
+    </li>`;
+  }).join('');
+}
+function selectLesson(idx){
+  const l=S.currentCourse.lessons[idx];
+  let mediaHtml='';
+  if(l.mediaUrl&&l.mediaType==='video'){
+    mediaHtml=`<div class="video-wrap"><video src="${l.mediaUrl}" controls style="position:absolute;inset:0;width:100%;height:100%;border-radius:var(--radius2)"></video></div>`;
+  } else if(l.mediaUrl&&l.mediaType==='image'){
+    mediaHtml=`<div class="video-wrap"><img src="${l.mediaUrl}" alt="${l.title}"></div>`;
+  } else {
+    mediaHtml=`<div class="video-wrap" style="aspect-ratio:16/9">
+      <i class="ti ti-player-play" style="font-size:40px"></i>
+      <span style="font-size:13px">Sem vídeo anexado</span>
+    </div>`;
+  }
+  document.getElementById('lesson-viewer').innerHTML=`
+    <h2 style="font-size:17px;font-weight:700;font-family:var(--font-display);margin-bottom:10px">${l.title}</h2>
+    ${mediaHtml}
+    <p style="font-size:13.5px;color:var(--text2);line-height:1.7;margin-bottom:10px">${l.body||''}</p>
+    ${l.math?`<div class="math-block">${l.math}</div>`:''}
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-primary" onclick="markDone(${idx})"><i class="ti ti-check"></i> ${l.done?'Concluída':'Marcar como concluída'}</button>
+    </div>`;
+}
+function markDone(idx){
+  const c=S.currentCourse;
+  c.lessons[idx].done=true;
+  c.lessons[idx].current=false;
+  if(idx+1<c.lessons.length&&!c.lessons[idx+1].done)c.lessons[idx+1].current=true;
+  c.progress=Math.round(c.lessons.filter(l=>l.done).length/c.lessons.length*100);
+  renderLessons();
+  notify('Aula marcada como concluída!');
+}
+
+// ─── FILES PER COURSE ────────────────────────────────────
+function renderCourseFiles(){
+  const c=S.currentCourse;
+  const el=document.getElementById('course-materials');
+  el.innerHTML=`
+    <div style="margin-bottom:12px;display:flex;gap:8px">
+      <div class="file-drop" style="flex:1;padding:14px" onclick="document.getElementById('course-file-upload').click()">
+        <i class="ti ti-upload" style="font-size:22px;margin-bottom:4px"></i>
+        <div style="font-size:12px">Enviar arquivo para este curso</div>
+      </div>
+      <input type="file" id="course-file-upload" multiple style="display:none" onchange="handleFileUpload(this.files,'course')">
+    </div>
+    ${(c.files||[]).map((f,i)=>{
+      const fi=fileIcon(f.name);
+      return`<div class="file-item">
+        <div class="file-icon" style="background:${fi.color}22;color:${fi.color}"><i class="ti ${fi.icon}"></i></div>
+        <div style="flex:1;overflow:hidden">
+          <div class="file-name">${f.name}</div>
+          <div class="file-size">${fmtSize(f.size)}</div>
+        </div>
+        ${f.url?`<a href="${f.url}" download="${f.name}" class="btn btn-ghost" style="padding:6px 10px"><i class="ti ti-download"></i></a>`:''}
+        <button class="btn btn-ghost" style="padding:6px 10px;color:var(--red)" onclick="removeCourseFile(${i})"><i class="ti ti-trash"></i></button>
+      </div>`;
+    }).join('')||'<p style="font-size:13px;color:var(--text3);text-align:center;padding:20px">Nenhum arquivo neste curso.</p>'}`;
+}
+function removeCourseFile(i){S.currentCourse.files.splice(i,1);renderCourseFiles()}
+
+// ─── ADD LESSON (ADMIN) ──────────────────────────────────
+function openAddLesson(){S.newLessonMedia=null;document.getElementById('nl-media-name').textContent='Clique para enviar vídeo ou imagem';openModal('m-lesson')}
+function previewMedia(input){
+  const f=input.files[0];if(!f)return;
+  document.getElementById('nl-media-name').textContent=f.name;
+  const reader=new FileReader();
+  reader.onload=e=>{S.newLessonMedia={url:e.target.result,type:f.type.startsWith('video')?'video':'image',name:f.name}};
+  reader.readAsDataURL(f);
+}
+function saveLesson(){
+  const title=document.getElementById('nl-title').value.trim();
+  if(!title||!S.currentCourse)return;
+  const newId=Math.max(0,...S.currentCourse.lessons.map(l=>l.id))+1;
+  S.currentCourse.lessons.push({
+    id:newId,title,done:false,dur:document.getElementById('nl-dur').value||'—',
+    body:document.getElementById('nl-body').value,
+    math:document.getElementById('nl-math').value,
+    mediaUrl:S.newLessonMedia?.url||null,
+    mediaType:S.newLessonMedia?.type||null
+  });
+  ['nl-title','nl-dur','nl-body','nl-math'].forEach(id=>document.getElementById(id).value='');
+  S.newLessonMedia=null;
+  closeModal('m-lesson');
+  renderLessons();
+  notify('Aula adicionada com sucesso!');
+}
+
+// ─── GRADES ──────────────────────────────────────────────
+function renderGrades(){
+  document.getElementById('grades-tabs').innerHTML=S.courses.map((c,i)=>`
+    <div class="tab${i===S.currentGradeTab?' active':''}" onclick="switchGradeTab(${i})">${c.name}</div>`).join('');
+  renderGradeContent();
+}
+function switchGradeTab(i){
+  S.currentGradeTab=i;
+  document.querySelectorAll('#grades-tabs .tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  renderGradeContent();
+}
+function renderGradeContent(){
+  const c=S.courses[S.currentGradeTab];
+  if(!c){document.getElementById('grades-content').innerHTML='';return}
+  const avg=calcAvg(c);
+  const avgColor=avg===null?'var(--text3)':avg>=6?'var(--green)':avg>=4?'var(--amber)':'var(--red)';
+  const statusText=avg===null?'—':avg>=6?'Aprovado':avg>=4?'Recuperação':'Reprovado';
+  const statusBadge=avg===null?'':avg>=6?'badge-green':avg>=4?'badge-amber':'badge-red';
+  const weightSum=c.criteria.reduce((a,b)=>a+b.weight,0);
+  document.getElementById('grades-content').innerHTML=`
+    <div class="grid2">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" style="margin:0">${c.name}</span>
+          <button class="btn btn-ghost" onclick="openGradeSetup(${c.id})" style="font-size:12px"><i class="ti ti-settings"></i> Critérios</button>
+        </div>
+        <table class="grade-table">
+          <thead><tr><th>Componente</th><th>Peso</th><th>Nota (0–10)</th></tr></thead>
+          <tbody>${c.criteria.map(cr=>`<tr>
+            <td style="font-weight:500">${cr.name}</td>
+            <td><span class="badge badge-blue">${cr.weight}%</span></td>
+            <td><input class="grade-input" type="number" min="0" max="10" step="0.1" value="${c.grades[cr.name]||''}" placeholder="—" onchange="updateGrade(${c.id},'${cr.name}',this.value)"></td>
+          </tr>`).join('')}</tbody>
+        </table>
+        <div style="font-size:12px;color:${weightSum===100?'var(--green)':'var(--red)'};margin-top:10px">
+          <i class="ti ti-info-circle"></i> Soma dos pesos: ${weightSum}%${weightSum!==100?' (deve ser 100%)':''}
+        </div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center">
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em">Média Final</div>
+        <div class="final-num" style="color:${avgColor}">${avg!==null?avg.toFixed(2):'—'}</div>
+        ${statusBadge?`<span class="badge ${statusBadge}" style="font-size:12px;padding:4px 16px">${statusText}</span>`:''}
+        <div class="progress-bar" style="width:100%">
+          <div class="progress-fill" style="width:${avg!==null?Math.min(avg*10,100):0}%;background:${avgColor}"></div>
+        </div>
+        <div style="font-size:11px;color:var(--text3)">Mínimo para aprovação: 6,0</div>
+      </div>
+    </div>`;
+}
+function updateGrade(cid,name,val){
+  const c=S.courses.find(x=>x.id===cid);
+  if(c){c.grades[name]=parseFloat(val);renderGradeContent()}
+}
+function openGradeSetup(cid){
+  S.editingCriteriaId=cid;
+  const c=S.courses.find(x=>x.id===cid);
+  document.getElementById('gs-title').textContent='Critérios — '+c.name;
+  renderCriteriaList();
+  openModal('m-grade-setup');
+}
+function renderCriteriaList(){
+  const c=S.courses.find(x=>x.id===S.editingCriteriaId);
+  document.getElementById('criteria-list').innerHTML=(c.criteria||[]).map((cr,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+      <input class="form-input" value="${cr.name}" style="flex:1" onchange="S.courses.find(x=>x.id===S.editingCriteriaId).criteria[${i}].name=this.value">
+      <input type="number" class="form-input" value="${cr.weight}" min="0" max="100" style="width:70px;text-align:center" onchange="S.courses.find(x=>x.id===S.editingCriteriaId).criteria[${i}].weight=parseInt(this.value)||0">
+      <span style="font-size:12px;color:var(--text3)">%</span>
+      <button onclick="removeCriterion(${i})" style="background:none;border:none;cursor:pointer;color:var(--text3)"><i class="ti ti-trash" style="font-size:15px"></i></button>
+    </div>`).join('');
+}
+function addCriterion(){
+  const c=S.courses.find(x=>x.id===S.editingCriteriaId);
+  if(c){c.criteria.push({name:'Novo',weight:0});renderCriteriaList()}
+}
+function removeCriterion(i){
+  const c=S.courses.find(x=>x.id===S.editingCriteriaId);
+  if(c){c.criteria.splice(i,1);renderCriteriaList()}
+}
+function saveCriteria(){closeModal('m-grade-setup');renderGradeContent();notify('Critérios salvos!')}
+
+// ─── EXPORT ──────────────────────────────────────────────
+function toggleDropdown(id){document.getElementById(id).classList.toggle('hidden')}
+document.addEventListener('click',e=>{if(!e.target.closest('.dropdown'))document.querySelectorAll('.dropdown-menu').forEach(d=>d.classList.add('hidden'))});
+
+function exportCSV(){
+  let csv='Curso,Componente,Peso,Nota\n';
+  S.courses.forEach(c=>{
+    c.criteria.forEach(cr=>{
+      csv+=`"${c.name}","${cr.name}",${cr.weight}%,${c.grades[cr.name]||''}\n`;
+    });
+    const avg=calcAvg(c);
+    csv+=`"${c.name}","MÉDIA FINAL",,${avg!==null?avg.toFixed(2):''}\n`;
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='notas_studyhub.csv';a.click();
+  URL.revokeObjectURL(url);
+  notify('CSV exportado com sucesso!');
+  document.getElementById('export-dd').classList.add('hidden');
+}
+
+function exportPDF(){
+  let html=`<html><head><meta charset="UTF-8"><title>Notas — StudyHub</title>
+  <style>body{font-family:Arial,sans-serif;padding:30px;color:#333}h1{color:#1a1a1a;margin-bottom:6px}h2{color:#58a6ff;margin-top:24px;margin-bottom:10px;font-size:16px}
+  table{width:100%;border-collapse:collapse;font-size:13px}th{background:#f0f0f0;padding:8px;text-align:left;border:1px solid #ddd}
+  td{padding:8px;border:1px solid #ddd}.avg{font-size:18px;font-weight:bold}.footer{color:#999;font-size:11px;margin-top:30px}</style></head><body>
+  <h1>Boletim de Notas — StudyHub</h1><p style="color:#888;font-size:12px">Gerado em ${new Date().toLocaleDateString('pt-BR')}</p>`;
+  S.courses.forEach(c=>{
+    const avg=calcAvg(c);
+    const status=avg===null?'—':avg>=6?'Aprovado':avg>=4?'Recuperação':'Reprovado';
+    html+=`<h2>${c.name} <span style="font-size:12px;color:#888">(${c.prof||''})</span></h2>
+    <table><tr><th>Componente</th><th>Peso</th><th>Nota</th></tr>`;
+    c.criteria.forEach(cr=>{html+=`<tr><td>${cr.name}</td><td>${cr.weight}%</td><td>${c.grades[cr.name]||'—'}</td></tr>`});
+    html+=`<tr style="background:#f8f8f8"><td><strong>Média Final</strong></td><td>—</td><td><strong class="avg">${avg!==null?avg.toFixed(2):'—'}</strong> <em>(${status})</em></td></tr></table>`;
+  });
+  html+=`<div class="footer">StudyHub · ${S.user?.username||''}</div></body></html>`;
+  const w=window.open('','_blank');
+  w.document.write(html);w.document.close();
+  setTimeout(()=>w.print(),500);
+  notify('Abrindo PDF para impressão...');
+  document.getElementById('export-dd').classList.add('hidden');
+}
+
+// ─── CALENDAR ────────────────────────────────────────────
+function renderCalendar(){
+  const y=S.calYear,m=S.calMonth;
+  const months=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  document.getElementById('cal-label').textContent=months[m]+' '+y;
+  const days=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let html=days.map(d=>`<div class="cal-day-name">${d}</div>`).join('');
+  const first=new Date(y,m,1).getDay(),total=new Date(y,m+1,0).getDate(),prev=new Date(y,m,0).getDate();
+  const today=new Date();
+  for(let i=0;i<first;i++)html+=`<div class="cal-day other-month"><div class="cal-day-num">${prev-first+1+i}</div></div>`;
+  for(let d=1;d<=total;d++){
+    const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=today.getDate()===d&&today.getMonth()===m&&today.getFullYear()===y;
+    const evs=S.events.filter(e=>e.date===ds);
+    html+=`<div class="cal-day${isToday?' today':''}">
+      <div class="cal-day-num" style="${isToday?'color:var(--accent);font-weight:700':''}">${d}</div>
+      ${evs.map(e=>`<div class="cal-event" style="background:${evColor(e.type)}22;color:${evColor(e.type)}">${e.title}</div>`).join('')}
+    </div>`;
+  }
+  const rem=(7-(first+total)%7)%7;
+  for(let i=1;i<=rem;i++)html+=`<div class="cal-day other-month"><div class="cal-day-num">${i}</div></div>`;
+  document.getElementById('cal-grid').innerHTML=html;
+}
+function changeMonth(d){
+  S.calMonth+=d;
+  if(S.calMonth>11){S.calMonth=0;S.calYear++}
+  if(S.calMonth<0){S.calMonth=11;S.calYear--}
+  renderCalendar();
+}
+function saveEvent(){
+  const title=document.getElementById('ev-title').value.trim();
+  const date=document.getElementById('ev-date').value;
+  if(!title||!date)return;
+  S.events.push({id:Date.now(),title,date,type:document.getElementById('ev-type').value,course:parseInt(document.getElementById('ev-course').value)||null});
+  document.getElementById('ev-title').value='';document.getElementById('ev-date').value='';
+  closeModal('m-event');renderCalendar();notify('Evento adicionado!');
+}
+function populateEventCourseSelect(){
+  document.getElementById('ev-course').innerHTML='<option value="">Nenhum</option>'+S.courses.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+// ─── CONTACTS ────────────────────────────────────────────
+function renderContacts(){
+  document.getElementById('contacts-grid').innerHTML=S.contacts.map(c=>{
+    const subjs=c.subjects.map(s=>`<span class="subj-tag" style="background:${c.color}22;color:${c.color}">${s}</span>`).join('');
+    const avatarInner=c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.style.display='none'">`:c.initials;
+    return`<div class="contact-card">
+      <div class="avatar" style="background:${c.color}22;color:${c.color}">${avatarInner}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:600;margin-bottom:5px">${c.name}</div>
+        <div class="contact-detail"><i class="ti ti-mail"></i><span>${c.email}</span></div>
+        <div class="contact-detail"><i class="ti ti-phone"></i><span>${c.phone}</span></div>
+        <div style="margin-top:6px">${subjs}</div>
+      </div>
+    </div>`;
+  }).join('')+`<div class="contact-card" style="border:1px dashed var(--border2);align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--text3);cursor:pointer;min-height:100px" onclick="openModal('m-contact')">
+    <i class="ti ti-user-plus" style="font-size:26px"></i><span style="font-size:13px">Adicionar contato</span></div>`;
+}
+function loadContactPhoto(input){
+  const f=input.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=e=>{S.contactPhotoData=e.target.result;document.getElementById('ct-photo-url').value='[foto carregada]'};
+  reader.readAsDataURL(f);
+}
+function saveContact(){
+  const name=document.getElementById('ct-name').value.trim();if(!name)return;
+  const subjects=document.getElementById('ct-subjects').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const colors=['#58a6ff','#3fb950','#bc8cff','#d29922','#f85149','#ff7b72','#34d399'];
+  S.contacts.push({
+    id:Date.now(),name,email:document.getElementById('ct-email').value.trim(),
+    phone:document.getElementById('ct-phone').value.trim(),subjects,
+    photo:S.contactPhotoData||document.getElementById('ct-photo-url').value.trim()||'',
+    initials:name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),
+    color:colors[S.contacts.length%colors.length]
+  });
+  S.contactPhotoData=null;
+  ['ct-name','ct-email','ct-phone','ct-subjects','ct-photo-url'].forEach(id=>document.getElementById(id).value='');
+  closeModal('m-contact');renderContacts();notify('Contato adicionado!');
+}
+
+// ─── FILES ───────────────────────────────────────────────
+function setupDrop(){
+  const drop=document.getElementById('main-drop');
+  ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('dragover')}));
+  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('dragover')}));
+  drop.addEventListener('drop',e=>{handleFileUpload(e.dataTransfer.files,'geral')});
+}
+function handleFileUpload(files,dest){
+  for(const f of files){
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const fileObj={id:Date.now()+Math.random(),name:f.name,size:f.size,type:f.type,url:e.target.result,dest};
+      if(dest==='course'&&S.currentCourse){S.currentCourse.files.push(fileObj);renderCourseFiles()}
+      else{S.files.push(fileObj);renderFiles()}
+    };
+    reader.readAsDataURL(f);
+  }
+  notify(`${files.length} arquivo(s) enviado(s)!`);
+}
+function renderFiles(){
+  const el=document.getElementById('files-list');
+  if(!S.files.length){el.innerHTML='<p style="color:var(--text3);text-align:center;padding:20px;font-size:13px">Nenhum arquivo enviado ainda.</p>';return}
+  el.innerHTML=S.files.map((f,i)=>{
+    const fi=fileIcon(f.name);
+    return`<div class="file-item">
+      <div class="file-icon" style="background:${fi.color}22;color:${fi.color}"><i class="ti ${fi.icon}"></i></div>
+      <div style="flex:1;overflow:hidden"><div class="file-name">${f.name}</div><div class="file-size">${fmtSize(f.size)} · ${f.dest}</div></div>
+      <a href="${f.url}" download="${f.name}" class="btn btn-ghost" style="padding:6px 10px"><i class="ti ti-download"></i></a>
+      <button class="btn btn-ghost" style="padding:6px 10px;color:var(--red)" onclick="removeFile(${i})"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+function removeFile(i){S.files.splice(i,1);renderFiles()}
+
+// ─── CLAUDE CHAT ─────────────────────────────────────────
+function updateChatCourseSelect(){
+  const sel=document.getElementById('chat-course-ctx');
+  sel.innerHTML='<option value="">Contexto geral</option>'+S.courses.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+}
+function updateChatContext(){
+  S.chatCourseCtx=document.getElementById('chat-course-ctx').value;
+  const c=S.courses.find(x=>x.id===parseInt(S.chatCourseCtx));
+  document.getElementById('chat-context-label').textContent=c?`Assistente de ${c.name}`:'Assistente de estudos';
+}
+async function sendChat(){
+  const inp=document.getElementById('chat-input');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  inp.value='';
+  const btn=document.getElementById('chat-send-btn');
+  btn.disabled=true;
+  addChatBubble(msg,'user');
+  S.chatHistory.push({role:'user',content:msg});
+  const loading=addChatBubble('<i class="ti ti-dots spin" style="font-size:16px"></i>','assistant loading');
+  
+  const c=S.courses.find(x=>x.id===parseInt(S.chatCourseCtx));
+  const sysPrompt=c
+    ?`Você é um assistente de estudos especializado em "${c.name}" (professor: ${c.prof||'não informado'}). Ajude o aluno com dúvidas sobre este curso, explique conceitos, resolva exercícios e dê exemplos relacionados. Seja claro, didático e use exemplos práticos. Responda em português.`
+    :'Você é um assistente de estudos inteligente. Ajude o aluno com qualquer dúvida acadêmica, explique conceitos, resolva problemas de matemática, física, programação e outras disciplinas. Seja didático, use exemplos e responda em português.';
+
+  try {
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:sysPrompt,
+        messages:S.chatHistory.slice(-10)
+      })
+    });
+    const data=await res.json();
+    const reply=data.content?.map(b=>b.text||'').join('')||'Desculpe, não consegui responder.';
+    loading.remove();
+    addChatBubble(reply,'assistant');
+    S.chatHistory.push({role:'assistant',content:reply});
+  } catch(e){
+    loading.remove();
+    addChatBubble('Erro ao conectar com Claude. Verifique sua conexão ou a chave de API.','assistant');
+  }
+  btn.disabled=false;
+  scrollChatDown();
+}
+function addChatBubble(html,cls){
+  const el=document.createElement('div');
+  el.className='chat-bubble '+cls;
+  el.innerHTML=html;
+  document.getElementById('chat-messages').appendChild(el);
+  scrollChatDown();
+  return el;
+}
+function scrollChatDown(){const m=document.getElementById('chat-messages');m.scrollTop=m.scrollHeight}
+
+// ─── ADMIN ───────────────────────────────────────────────
+function renderAdmin(){
+  document.getElementById('admin-courses-list').innerHTML=S.courses.map(c=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg3);border-radius:var(--radius);margin-bottom:6px">
+      <div class="dot" style="background:${c.color};width:10px;height:10px"></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${c.name}</div><div style="font-size:11px;color:var(--text3)">${c.prof||'—'} · ${c.lessons.length} aulas</div></div>
+      <button class="btn btn-ghost" style="font-size:12px" onclick="editCourse(${c.id})"><i class="ti ti-edit"></i></button>
+      <button class="btn btn-danger" style="font-size:12px;padding:6px 10px" onclick="deleteCourse(${c.id})"><i class="ti ti-trash"></i></button>
+    </div>`).join('')||'<p style="font-size:13px;color:var(--text3)">Nenhum curso.</p>';
+  document.getElementById('admin-users-list').innerHTML=USERS.map(u=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg3);border-radius:var(--radius);margin-bottom:6px">
+      <div class="avatar-btn" style="width:32px;height:32px;font-size:12px">${u.initials}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500">${u.username}</div><div style="font-size:11px;color:var(--text3)">${u.display}</div></div>
+      <span class="badge ${u.role==='admin'?'badge-purple':'badge-blue'}">${u.role}</span>
+    </div>`).join('');
+}
+function editCourse(id){
+  S.editingCourseId=id;
+  const c=S.courses.find(x=>x.id===id);
+  document.getElementById('m-course-title').textContent='Editar Curso';
+  document.getElementById('nc-name').value=c.name;
+  document.getElementById('nc-prof').value=c.prof||'';
+  document.getElementById('nc-desc').value=c.desc||'';
+  document.getElementById('nc-save-btn').textContent='Salvar';
+  S.selectedColor=c.color;
+  updateColorSwatches();
+  openModal('m-course');
+}
+function deleteCourse(id){
+  if(!confirm('Tem certeza que deseja excluir este curso?'))return;
+  S.courses=S.courses.filter(c=>c.id!==id);
+  renderAdmin();renderSidebar();notify('Curso excluído.');
+}
+
+// ─── COURSE MODAL ────────────────────────────────────────
+const COLORS=['#58a6ff','#3fb950','#bc8cff','#d29922','#f85149','#ff7b72','#34d399','#fb923c','#38bdf8'];
+function populateColorSwatches(){
+  document.getElementById('color-swatches').innerHTML=COLORS.map(c=>`
+    <div class="color-swatch${c===S.selectedColor?' selected':''}" style="background:${c}" data-color="${c}" onclick="selectColor('${c}')"></div>`).join('');
+}
+function updateColorSwatches(){
+  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.toggle('selected',s.dataset.color===S.selectedColor));
+}
+function selectColor(c){S.selectedColor=c;updateColorSwatches()}
+function saveCourse(){
+  const name=document.getElementById('nc-name').value.trim();if(!name)return;
+  if(S.editingCourseId){
+    const c=S.courses.find(x=>x.id===S.editingCourseId);
+    Object.assign(c,{name,color:S.selectedColor,prof:document.getElementById('nc-prof').value.trim(),desc:document.getElementById('nc-desc').value.trim()});
+    S.editingCourseId=null;notify('Curso atualizado!');
+  } else {
+    S.courses.push({id:Date.now(),name,color:S.selectedColor,prof:document.getElementById('nc-prof').value.trim(),desc:document.getElementById('nc-desc').value.trim(),progress:0,lessons:[],criteria:[{name:'P1',weight:40},{name:'P2',weight:40},{name:'Trabalho',weight:20}],grades:{},files:[]});
+    updateChatCourseSelect();
+    notify('Curso criado com sucesso!');
+  }
+  ['nc-name','nc-prof','nc-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('m-course-title').textContent='Novo Curso';
+  document.getElementById('nc-save-btn').textContent='Criar Curso';
+  closeModal('m-course');renderSidebar();
+  if(document.getElementById('page-admin').classList.contains('active'))renderAdmin();
+  else renderCourses();
+}
+
+// ─── CLOUD ───────────────────────────────────────────────
+function cloudConnect(provider){
+  const msgs={google:'Google Drive requer cadastro no Google Cloud Console. Veja o README para instruções.',onedrive:'OneDrive requer cadastro no Microsoft Azure. Veja o README para instruções.',icloud:'iCloud Drive requer Apple Developer Program. Veja o README para instruções.'};
+  const ids={google:'gdrive-status',onedrive:'onedrive-status',icloud:'icloud-status'};
+  notify(msgs[provider],'error');
+}
+
+// ─── SEARCH ──────────────────────────────────────────────
+function doSearch(q){
+  if(!q.trim())return;
+  const results=[];
+  S.courses.forEach(c=>{
+    if(c.name.toLowerCase().includes(q.toLowerCase()))results.push({type:'Curso',name:c.name,action:()=>openCourse(c.id)});
+    c.lessons.forEach(l=>{if(l.title.toLowerCase().includes(q.toLowerCase()))results.push({type:'Aula',name:l.title+' ('+c.name+')',action:()=>{openCourse(c.id);showCourseTab('content')}})});
+  });
+  S.contacts.forEach(c=>{if(c.name.toLowerCase().includes(q.toLowerCase()))results.push({type:'Contato',name:c.name,action:()=>showPage('contacts')})});
+}
+
+// ─── MODALS ──────────────────────────────────────────────
+function openModal(id){
+  if(id==='m-event')populateEventCourseSelect();
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+</script>
+</body>
+</html>
