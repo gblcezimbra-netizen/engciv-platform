@@ -1,0 +1,15 @@
+
+COMO COLOCAR ONLINE
+
+1. Crie conta na Vercel:
+https://vercel.com
+
+2. Suba o projeto no GitHub
+
+3. Clique em "New Project"
+
+4. Import GitHub Repository
+
+5. Deploy
+
+O site ficará online automaticamente.
